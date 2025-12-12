@@ -1,0 +1,7 @@
+{
+  "name": "@canvas",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
