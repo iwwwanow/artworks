@@ -1,5 +1,5 @@
-function draw() {
-  const canvas = document.getElementById("tutorial");
+function drawLesson1() {
+  const canvas = document.getElementById("lesson-1");
   if (canvas.getContext) {
     const ctx = canvas.getContext("2d");
 
@@ -9,4 +9,8 @@ function draw() {
     ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
     ctx.fillRect(30, 30, 55, 50);
   }
+}
+
+function draw() {
+  drawLesson1();
 }
