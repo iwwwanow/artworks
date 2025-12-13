@@ -40,9 +40,27 @@ function drawLesson4(ctx) {
   ctx.stroke();
 }
 
+function drawLesson5(ctx) {
+  // Filled triangle
+  ctx.beginPath();
+  ctx.moveTo(25, 25);
+  ctx.lineTo(105, 25);
+  ctx.lineTo(25, 105);
+  ctx.fill();
+
+  // Stroked triangle
+  ctx.beginPath();
+  ctx.moveTo(125, 125);
+  ctx.lineTo(125, 45);
+  ctx.lineTo(45, 125);
+  ctx.closePath();
+  ctx.stroke();
+}
+
 function draw() {
   drawLessonFactory(1, drawLesson1);
   drawLessonFactory(2, drawLesson2);
   drawLessonFactory(3, drawLesson3);
   drawLessonFactory(4, drawLesson4);
+  drawLessonFactory(5, drawLesson5);
 }
