@@ -2,7 +2,7 @@ const drawLessonFactory = (lessonId, callback) => {
   const canvas = document.getElementById(`lesson-${lessonId}`);
   if (canvas.getContext) {
     const ctx = canvas.getContext("2d");
-    callback(ctx);
+    callback(ctx, canvas);
   }
 };
 
@@ -194,6 +194,196 @@ function drawLesson10(ctx) {
   ctx.stroke(p);
 }
 
+function drawLesson11(ctx) {
+  for (var i = 0; i < 6; i++) {
+    for (var j = 0; j < 6; j++) {
+      ctx.fillStyle =
+        "rgb(" +
+        Math.floor(255 - 42.5 * i) +
+        "," +
+        Math.floor(255 - 42.5 * j) +
+        ",0)";
+      ctx.fillRect(j * 25, i * 25, 25, 25);
+    }
+  }
+}
+
+function drawLesson12(ctx) {
+  for (var i = 0; i < 6; i++) {
+    for (var j = 0; j < 6; j++) {
+      ctx.strokeStyle =
+        "rgb(0," +
+        Math.floor(255 - 42.5 * i) +
+        "," +
+        Math.floor(255 - 42.5 * j) +
+        ")";
+      ctx.beginPath();
+      ctx.arc(12.5 + j * 25, 12.5 + i * 25, 10, 0, Math.PI * 2, true);
+      ctx.stroke();
+    }
+  }
+}
+
+function drawLesson13(ctx) {
+  ctx.fillStyle = "#FD0";
+  ctx.fillRect(0, 0, 75, 75);
+  ctx.fillStyle = "#6C0";
+  ctx.fillRect(75, 0, 75, 75);
+  ctx.fillStyle = "#09F";
+  ctx.fillRect(0, 75, 75, 75);
+  ctx.fillStyle = "#F30";
+  ctx.fillRect(75, 75, 75, 75);
+  ctx.fillStyle = "#FFF";
+
+  // устанавливаем значение прозрачности
+  ctx.globalAlpha = 0.2;
+
+  // Рисуем полупрозрачные круги
+  for (i = 0; i < 7; i++) {
+    ctx.beginPath();
+    ctx.arc(75, 75, 10 + 10 * i, 0, Math.PI * 2, true);
+    ctx.fill();
+  }
+}
+
+function drawLesson14(ctx) {
+  ctx.fillStyle = "rgb(255,221,0)";
+  ctx.fillRect(0, 0, 150, 37.5);
+  ctx.fillStyle = "rgb(102,204,0)";
+  ctx.fillRect(0, 37.5, 150, 37.5);
+  ctx.fillStyle = "rgb(0,153,255)";
+  ctx.fillRect(0, 75, 150, 37.5);
+  ctx.fillStyle = "rgb(255,51,0)";
+  ctx.fillRect(0, 112.5, 150, 37.5);
+
+  // Нарисовать полупрозрачные прямоугольники
+  for (var i = 0; i < 10; i++) {
+    ctx.fillStyle = "rgba(255,255,255," + (i + 1) / 10 + ")";
+    for (var j = 0; j < 4; j++) {
+      ctx.fillRect(5 + i * 14, 5 + j * 37.5, 14, 27.5);
+    }
+  }
+}
+
+function drawLesson15(ctx) {
+  for (var i = 0; i < 10; i++) {
+    ctx.lineWidth = 1 + i;
+    ctx.beginPath();
+    ctx.moveTo(5 + i * 14, 5);
+    ctx.lineTo(5 + i * 14, 140);
+    ctx.stroke();
+  }
+}
+
+function drawLesson16(ctx) {
+  var lineCap = ["butt", "round", "square"];
+
+  // Draw guides
+  ctx.strokeStyle = "#09f";
+  ctx.beginPath();
+  ctx.moveTo(10, 10);
+  ctx.lineTo(140, 10);
+  ctx.moveTo(10, 140);
+  ctx.lineTo(140, 140);
+  ctx.stroke();
+
+  // Draw lines
+  ctx.strokeStyle = "black";
+  for (var i = 0; i < lineCap.length; i++) {
+    ctx.lineWidth = 15;
+    ctx.lineCap = lineCap[i];
+    ctx.beginPath();
+    ctx.moveTo(25 + i * 50, 10);
+    ctx.lineTo(25 + i * 50, 140);
+    ctx.stroke();
+  }
+}
+
+function drawLesson17(ctx) {
+  var lineJoin = ["round", "bevel", "miter"];
+  ctx.lineWidth = 10;
+  for (var i = 0; i < lineJoin.length; i++) {
+    ctx.lineJoin = lineJoin[i];
+    ctx.beginPath();
+    ctx.moveTo(-5, 5 + i * 40);
+    ctx.lineTo(35, 45 + i * 40);
+    ctx.lineTo(75, 5 + i * 40);
+    ctx.lineTo(115, 45 + i * 40);
+    ctx.lineTo(155, 5 + i * 40);
+    ctx.stroke();
+  }
+}
+
+function drawLesson18(ctx) {
+  var lineJoin = ["round", "bevel", "miter"];
+  ctx.lineWidth = 10;
+  for (var i = 0; i < lineJoin.length; i++) {
+    ctx.lineJoin = lineJoin[i];
+    ctx.beginPath();
+    ctx.moveTo(-5, 5 + i * 40);
+    ctx.lineTo(35, 45 + i * 40);
+    ctx.lineTo(75, 5 + i * 40);
+    ctx.lineTo(115, 45 + i * 40);
+    ctx.lineTo(155, 5 + i * 40);
+    ctx.stroke();
+  }
+}
+
+function drawLesson19(ctx) {
+  const MITER_LIMIT = 10;
+
+  // Clear canvas
+  ctx.clearRect(0, 0, 150, 150);
+
+  // Draw guides
+  ctx.strokeStyle = "#09f";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-5, 50, 160, 50);
+
+  // Set line styles
+  ctx.strokeStyle = "#000";
+  ctx.lineWidth = 10;
+
+  // check input
+  if (MITER_LIMIT) {
+    ctx.miterLimit = parseFloat(MITER_LIMIT);
+  } else {
+    alert("Value must be a positive number");
+  }
+
+  // Draw lines
+  ctx.beginPath();
+  ctx.moveTo(0, 100);
+  for (i = 0; i < 24; i++) {
+    var dy = i % 2 == 0 ? 25 : -25;
+    ctx.lineTo(Math.pow(i, 1.5) * 2, 75 + dy);
+  }
+  ctx.stroke();
+  return false;
+}
+
+function drawLesson20(ctx, canvas) {
+  var offset = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setLineDash([4, 2]);
+    ctx.lineDashOffset = -offset;
+    ctx.strokeRect(10, 10, 100, 100);
+  }
+
+  function march() {
+    offset++;
+    if (offset > 16) {
+      offset = 0;
+    }
+    draw();
+    setTimeout(march, 20);
+  }
+
+  march();
+}
+
 function draw() {
   drawLessonFactory(1, drawLesson1);
   drawLessonFactory(2, drawLesson2);
@@ -205,4 +395,14 @@ function draw() {
   drawLessonFactory(8, drawLesson8);
   drawLessonFactory(9, drawLesson9);
   drawLessonFactory(10, drawLesson10);
+  drawLessonFactory(11, drawLesson11);
+  drawLessonFactory(12, drawLesson12);
+  drawLessonFactory(13, drawLesson13);
+  drawLessonFactory(14, drawLesson14);
+  drawLessonFactory(15, drawLesson15);
+  drawLessonFactory(16, drawLesson16);
+  drawLessonFactory(17, drawLesson17);
+  drawLessonFactory(18, drawLesson18);
+  drawLessonFactory(19, drawLesson19);
+  drawLessonFactory(20, drawLesson20);
 }
