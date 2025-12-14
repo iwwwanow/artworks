@@ -470,6 +470,50 @@ function drawLesson25(ctx) {
   ctx.fill("evenodd");
 }
 
+function drawLesson26(ctx) {
+  ctx.font = "48px serif";
+  ctx.fillText("Hello world", 10, 50);
+}
+
+function drawLesson27(ctx) {
+  ctx.font = "48px serif";
+  ctx.strokeText("Hello world", 10, 50);
+}
+
+function drawLesson28(ctx) {
+  var img = new Image();
+  img.onload = function () {
+    ctx.drawImage(img, 0, 0);
+    ctx.beginPath();
+    ctx.moveTo(30, 96);
+    ctx.lineTo(70, 66);
+    ctx.lineTo(103, 76);
+    ctx.lineTo(170, 15);
+    ctx.stroke();
+  };
+  img.src = "backdrop.png";
+}
+
+function drawLesson29(ctx) {
+  var img = new Image();
+  img.onload = function () {
+    for (var i = 0; i < 4; i++) {
+      for (var j = 0; j < 3; j++) {
+        ctx.drawImage(img, j * 50, i * 38, 50, 38);
+      }
+    }
+  };
+  img.src = "backdrop.png";
+}
+
+function drawLesson30(ctx) {
+  var img = new Image();
+  img.onload = function () {
+    ctx.drawImage(img, 83, 71, 104, 124, 21, 20, 87, 104);
+  };
+  img.src = "gem-1.jpg";
+}
+
 function draw() {
   drawLessonFactory(1, drawLesson1);
   drawLessonFactory(2, drawLesson2);
@@ -496,4 +540,35 @@ function draw() {
   drawLessonFactory(23, drawLesson23);
   drawLessonFactory(24, drawLesson24);
   drawLessonFactory(25, drawLesson25);
+  drawLessonFactory(26, drawLesson26);
+  drawLessonFactory(27, drawLesson27);
+  drawLessonFactory(28, drawLesson28);
+  drawLessonFactory(29, drawLesson29);
+  drawLessonFactory(30, drawLesson30);
+
+  drawGallery();
 }
+
+const drawGallery = () => {
+  // Цикл по всем изображениям
+  for (var i = 0; i < document.images.length; i++) {
+    // Не добавляет canvas для изображения рамки
+    if (document.images[i].getAttribute("id") != "frame") {
+      // Создаёт элемент canvas
+      var canvas = document.createElement("canvas");
+      canvas.setAttribute("width", 132);
+      canvas.setAttribute("height", 150);
+
+      // Вставляет перед изображением
+      document.images[i].parentNode.insertBefore(canvas, document.images[i]);
+
+      var ctx = canvas.getContext("2d");
+
+      // Рисует изображение в canvas
+      ctx.drawImage(document.images[i], 15, 20);
+
+      // Добавляет рамку
+      ctx.drawImage(document.getElementById("frame"), 0, 0);
+    }
+  }
+};

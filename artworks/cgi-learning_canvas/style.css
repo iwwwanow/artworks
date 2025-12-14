@@ -1,3 +1,20 @@
 canvas {
   border: 1px solid black;
 }
+
+.table-container {
+  background: 0 -100px repeat-x url(bg_gallery.png) #4f191a;
+  margin: 10px;
+}
+
+img {
+  display: none;
+}
+
+table {
+  margin: 0 auto;
+}
+
+td {
+  padding: 15px;
+}
