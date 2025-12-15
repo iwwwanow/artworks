@@ -514,6 +514,383 @@ function drawLesson30(ctx) {
   img.src = "gem-1.jpg";
 }
 
+const drawGallery = () => {
+  // Цикл по всем изображениям
+  for (var i = 0; i < document.images.length; i++) {
+    // Не добавляет canvas для изображения рамки
+    if (document.images[i].getAttribute("id") != "frame") {
+      // Создаёт элемент canvas
+      var canvas = document.createElement("canvas");
+      canvas.setAttribute("width", 132);
+      canvas.setAttribute("height", 150);
+
+      // Вставляет перед изображением
+      document.images[i].parentNode.insertBefore(canvas, document.images[i]);
+
+      var ctx = canvas.getContext("2d");
+
+      // Рисует изображение в canvas
+      ctx.drawImage(document.images[i], 15, 20);
+
+      // Добавляет рамку
+      ctx.drawImage(document.getElementById("frame"), 0, 0);
+    }
+  }
+};
+
+function drawLesson31(ctx) {
+  ctx.fillRect(0, 0, 150, 150); // рисуем прямоугольник с настройками по умолчанию
+  ctx.save(); // сохраняем состояние
+
+  ctx.fillStyle = "#09F"; // вносим изменения в настройки
+  ctx.fillRect(15, 15, 120, 120); // рисуем прямоугольник с новыми настройками
+  ctx.save(); // сохраняем состояние
+
+  ctx.fillStyle = "#FFF"; // вносим изменения в настройки
+  ctx.globalAlpha = 0.5;
+  ctx.fillRect(30, 30, 90, 90); // рисуем прямоугольник с новыми настройками
+
+  ctx.restore(); // возвращаемся к предыдущим настройкам
+  ctx.fillRect(45, 45, 60, 60); // рисуем прямоугольник с восстановленными настройками
+
+  ctx.restore(); // возвращаемся к начальным настройкам
+  ctx.fillRect(60, 60, 30, 30); // рисуем прямоугольник с изначальными настройками
+}
+
+function drawLesson32(ctx) {
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      ctx.save();
+      ctx.fillStyle = "rgb(" + 51 * i + ", " + (255 - 51 * i) + ", 255)";
+      ctx.translate(10 + j * 50, 10 + i * 50);
+      ctx.fillRect(0, 0, 25, 25);
+      ctx.restore();
+    }
+  }
+}
+
+function drawLesson33(ctx) {
+  // left rectangles, rotate from canvas origin
+  ctx.save();
+  // blue rect
+  ctx.fillStyle = "#0095DD";
+  ctx.fillRect(30, 30, 100, 100);
+  ctx.rotate((Math.PI / 180) * 25);
+  // grey rect
+  ctx.fillStyle = "#4D4E53";
+  ctx.fillRect(30, 30, 100, 100);
+  ctx.restore();
+
+  // right rectangles, rotate from rectangle center
+  // draw blue rect
+  ctx.fillStyle = "#0095DD";
+  ctx.fillRect(150, 30, 100, 100);
+
+  ctx.translate(200, 80); // translate to rectangle center
+  // x = x + 0.5 * width
+  // y = y + 0.5 * height
+  ctx.rotate((Math.PI / 180) * 25); // rotate
+  ctx.translate(-200, -80); // translate back
+
+  // draw grey rect
+  ctx.fillStyle = "#4D4E53";
+  ctx.fillRect(150, 30, 100, 100);
+}
+
+function drawLesson34(ctx) {
+  // рисуем масштабированный прямоугольник.
+  ctx.save();
+  ctx.scale(10, 3);
+  ctx.fillRect(1, 10, 10, 10);
+  ctx.restore();
+
+  // размещаем текст, отражённый по горизонтали
+  ctx.scale(-1, 1);
+  ctx.font = "48px serif";
+  ctx.fillText("MDN", -135, 120);
+}
+
+function drawLesson35(ctx) {
+  var sin = Math.sin(Math.PI / 6);
+  var cos = Math.cos(Math.PI / 6);
+  ctx.translate(100, 100);
+  var c = 0;
+  for (var i = 0; i <= 12; i++) {
+    c = Math.floor((255 / 12) * i);
+    ctx.fillStyle = "rgb(" + c + ", " + c + ", " + c + ")";
+    ctx.fillRect(0, 0, 100, 10);
+    ctx.transform(cos, sin, -sin, cos, 0, 0);
+  }
+
+  ctx.setTransform(-1, 0, 0, 1, 100, 100);
+  ctx.fillStyle = "rgba(255, 128, 255, 0.5)";
+  ctx.fillRect(0, 50, 100, 100);
+}
+
+function drawStar(ctx, r) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  for (var i = 0; i < 9; i++) {
+    ctx.rotate(Math.PI / 5);
+    if (i % 2 === 0) {
+      ctx.lineTo((r / 0.525731) * 0.200811, 0);
+    } else {
+      ctx.lineTo(r, 0);
+    }
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawLesson36(ctx) {
+  ctx.fillRect(0, 0, 150, 150);
+  ctx.translate(75, 75);
+
+  // Create a circular clipping path
+  ctx.beginPath();
+  ctx.arc(0, 0, 60, 0, Math.PI * 2, true);
+  ctx.clip();
+
+  // draw background
+  var lingrad = ctx.createLinearGradient(0, -75, 0, 75);
+  lingrad.addColorStop(0, "#232256");
+  lingrad.addColorStop(1, "#143778");
+
+  ctx.fillStyle = lingrad;
+  ctx.fillRect(-75, -75, 150, 150);
+
+  // draw stars
+  for (var j = 1; j < 50; j++) {
+    ctx.save();
+    ctx.fillStyle = "#fff";
+    ctx.translate(
+      75 - Math.floor(Math.random() * 150),
+      75 - Math.floor(Math.random() * 150),
+    );
+    drawStar(ctx, Math.floor(Math.random() * 4) + 2);
+    ctx.restore();
+  }
+}
+
+var sun = new Image();
+var moon = new Image();
+var earth = new Image();
+function init() {
+  sun.src = "canvas_sun.png";
+  moon.src = "canvas_moon.png";
+  earth.src = "canvas_earth.png";
+  window.requestAnimationFrame(drawLesson37);
+}
+function drawLesson37(ctx) {
+  ctx.globalCompositeOperation = "destination-over";
+  ctx.clearRect(0, 0, 300, 300); // clear canvas
+
+  ctx.fillStyle = "rgba(0,0,0,0.4)";
+  ctx.strokeStyle = "rgba(0,153,255,0.4)";
+  ctx.save();
+  ctx.translate(150, 150);
+
+  // Earth
+  var time = new Date();
+  ctx.rotate(
+    ((2 * Math.PI) / 60) * time.getSeconds() +
+      ((2 * Math.PI) / 60000) * time.getMilliseconds(),
+  );
+  ctx.translate(105, 0);
+  ctx.fillRect(0, -12, 50, 24); // Shadow
+  ctx.drawImage(earth, -12, -12);
+
+  // Moon
+  ctx.save();
+  ctx.rotate(
+    ((2 * Math.PI) / 6) * time.getSeconds() +
+      ((2 * Math.PI) / 6000) * time.getMilliseconds(),
+  );
+  ctx.translate(0, 28.5);
+  ctx.drawImage(moon, -3.5, -3.5);
+  ctx.restore();
+
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+  ctx.stroke();
+
+  ctx.drawImage(sun, 0, 0, 300, 300);
+
+  window.requestAnimationFrame(() => drawLesson37(ctx));
+}
+
+function drawLesson38(ctx) {
+  var now = new Date();
+  ctx.save();
+  ctx.clearRect(0, 0, 150, 150);
+  ctx.translate(75, 75);
+  ctx.scale(0.4, 0.4);
+  ctx.rotate(-Math.PI / 2);
+  ctx.strokeStyle = "black";
+  ctx.fillStyle = "white";
+  ctx.lineWidth = 8;
+  ctx.lineCap = "round";
+
+  // Hour marks
+  ctx.save();
+  for (var i = 0; i < 12; i++) {
+    ctx.beginPath();
+    ctx.rotate(Math.PI / 6);
+    ctx.moveTo(100, 0);
+    ctx.lineTo(120, 0);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // Minute marks
+  ctx.save();
+  ctx.lineWidth = 5;
+  for (i = 0; i < 60; i++) {
+    if (i % 5 != 0) {
+      ctx.beginPath();
+      ctx.moveTo(117, 0);
+      ctx.lineTo(120, 0);
+      ctx.stroke();
+    }
+    ctx.rotate(Math.PI / 30);
+  }
+  ctx.restore();
+
+  var sec = now.getSeconds();
+  var min = now.getMinutes();
+  var hr = now.getHours();
+  hr = hr >= 12 ? hr - 12 : hr;
+
+  ctx.fillStyle = "black";
+
+  // write Hours
+  ctx.save();
+  ctx.rotate(
+    hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) * sec,
+  );
+  ctx.lineWidth = 14;
+  ctx.beginPath();
+  ctx.moveTo(-20, 0);
+  ctx.lineTo(80, 0);
+  ctx.stroke();
+  ctx.restore();
+
+  // write Minutes
+  ctx.save();
+  ctx.rotate((Math.PI / 30) * min + (Math.PI / 1800) * sec);
+  ctx.lineWidth = 10;
+  ctx.beginPath();
+  ctx.moveTo(-28, 0);
+  ctx.lineTo(112, 0);
+  ctx.stroke();
+  ctx.restore();
+
+  // Write seconds
+  ctx.save();
+  ctx.rotate((sec * Math.PI) / 30);
+  ctx.strokeStyle = "#D40000";
+  ctx.fillStyle = "#D40000";
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(-30, 0);
+  ctx.lineTo(83, 0);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(0, 0, 10, 0, Math.PI * 2, true);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(95, 0, 10, 0, Math.PI * 2, true);
+  ctx.stroke();
+  ctx.fillStyle = "rgba(0,0,0,0)";
+  ctx.arc(0, 0, 3, 0, Math.PI * 2, true);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.lineWidth = 14;
+  ctx.strokeStyle = "#325FA2";
+  ctx.arc(0, 0, 142, 0, Math.PI * 2, true);
+  ctx.stroke();
+
+  ctx.restore();
+
+  window.requestAnimationFrame(() => drawLesson38(ctx));
+}
+
+var img = new Image();
+// User Variables - customize these to change the image being scrolled, its
+// direction, and the speed.
+img.src = "capitan_meadows,_yosemite_national_park.jpg";
+var CanvasXSize = 800;
+var CanvasYSize = 200;
+var speed = 30; //lower is faster
+var scale = 1.05;
+var y = -4.5; //vertical offset
+var dx = 0.75;
+var imgW;
+var imgH;
+var x = 0;
+var clearX;
+var clearY;
+var ctx;
+img.onload = function () {
+  imgW = img.width * scale;
+  imgH = img.height * scale;
+  if (imgW > CanvasXSize) {
+    x = CanvasXSize - imgW;
+  } // image larger than canvas
+  if (imgW > CanvasXSize) {
+    clearX = imgW;
+  } // image larger than canvas
+  else {
+    clearX = CanvasXSize;
+  }
+  if (imgH > CanvasYSize) {
+    clearY = imgH;
+  } // image larger than canvas
+  else {
+    clearY = CanvasYSize;
+  }
+  //Get Canvas Element
+  ctx = document.getElementById("lesson-39").getContext("2d");
+  //Set Refresh Rate
+  return setInterval(drawLesson39, speed);
+};
+
+function drawLesson39() {
+  ctx.clearRect(0, 0, clearX, clearY);
+  //If image is <= Canvas Size
+  if (imgW <= CanvasXSize) {
+    //reset, start from beginning
+    if (x > CanvasXSize) {
+      x = 0;
+    }
+    //draw aditional image
+    if (x > CanvasXSize - imgW) {
+      ctx.drawImage(img, x - CanvasXSize + 1, y, imgW, imgH);
+    }
+  }
+  //If image is > Canvas Size
+  else {
+    //reset, start from beginning
+    if (x > CanvasXSize) {
+      x = CanvasXSize - imgW;
+    }
+    //draw aditional image
+    if (x > CanvasXSize - imgW) {
+      ctx.drawImage(img, x - imgW + 1, y, imgW, imgH);
+    }
+  }
+  //draw image
+  ctx.drawImage(img, x, y, imgW, imgH);
+  //amount to move
+  x += dx;
+}
+
 function draw() {
   drawLessonFactory(1, drawLesson1);
   drawLessonFactory(2, drawLesson2);
@@ -547,28 +924,15 @@ function draw() {
   drawLessonFactory(30, drawLesson30);
 
   drawGallery();
+
+  drawLessonFactory(31, drawLesson31);
+  drawLessonFactory(32, drawLesson32);
+  drawLessonFactory(33, drawLesson33);
+  drawLessonFactory(34, drawLesson34);
+  drawLessonFactory(35, drawLesson35);
+  drawLessonFactory(36, drawLesson36);
+  drawLessonFactory(37, drawLesson37);
+  drawLessonFactory(38, drawLesson38);
 }
 
-const drawGallery = () => {
-  // Цикл по всем изображениям
-  for (var i = 0; i < document.images.length; i++) {
-    // Не добавляет canvas для изображения рамки
-    if (document.images[i].getAttribute("id") != "frame") {
-      // Создаёт элемент canvas
-      var canvas = document.createElement("canvas");
-      canvas.setAttribute("width", 132);
-      canvas.setAttribute("height", 150);
-
-      // Вставляет перед изображением
-      document.images[i].parentNode.insertBefore(canvas, document.images[i]);
-
-      var ctx = canvas.getContext("2d");
-
-      // Рисует изображение в canvas
-      ctx.drawImage(document.images[i], 15, 20);
-
-      // Добавляет рамку
-      ctx.drawImage(document.getElementById("frame"), 0, 0);
-    }
-  }
-};
+init();
