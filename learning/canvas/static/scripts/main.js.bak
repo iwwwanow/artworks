@@ -1,3 +1,5 @@
+import { Lesson } from "./canvas/lesson.jss";
+
 const drawLessonFactory = (lessonId, callback) => {
   const canvas = document.getElementById(`lesson-${lessonId}`);
   if (canvas.getContext) {
@@ -892,6 +894,7 @@ function drawLesson39() {
 }
 
 function draw() {
+  // const
   drawLessonFactory(1, drawLesson1);
   drawLessonFactory(2, drawLesson2);
   drawLessonFactory(3, drawLesson3);
