@@ -38,4 +38,5 @@ const bodyLoadHandler = () => {
   example37.execute();
   example38.execute();
   example39.execute();
+  example40.execute();
 };
