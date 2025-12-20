@@ -5,7 +5,9 @@ const example41drawer = (ctx, canvas) => {
     ctx.drawImage(img, 0, 0);
     img.style.display = "none";
   };
+
   var color = document.getElementById("color");
+
   function pick(event) {
     var x = event.offsetX;
     var y = event.offsetY;
