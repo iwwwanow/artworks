@@ -7,13 +7,9 @@ const example41drawer = (ctx, canvas) => {
   };
   var color = document.getElementById("color");
   function pick(event) {
-    // TODO incorrect x & y position
-    // var x = event.layerX;
-    // var y = event.layerY;
-    var x = 200;
-    var y = 200;
+    var x = event.offsetX;
+    var y = event.offsetY;
     var pixel = ctx.getImageData(x, y, 1, 1);
-    console.log(x, y);
     var data = pixel.data;
     var rgba =
       "rgba(" +
@@ -25,7 +21,6 @@ const example41drawer = (ctx, canvas) => {
       ", " +
       data[3] / 255 +
       ")";
-    console.log(rgba);
     color.style.background = rgba;
     color.textContent = rgba;
   }
