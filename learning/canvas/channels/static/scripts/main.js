@@ -1,0 +1,3 @@
+const bodyLoadHandler = () => {
+  drawChannelsProject();
+};
