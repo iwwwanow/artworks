@@ -1,3 +1,4 @@
+
 const example43drawer = (ctx, canvas) => {
   var img = new Image();
   img.src = "assets/rhino.jpg";
