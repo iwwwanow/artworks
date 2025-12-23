@@ -16,16 +16,41 @@ img.onload = () => {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
 
-  console.log(data);
+  // setRedImageData(data);
+  // setGreenImageData(data);
+  setBlueImageData(data);
 
+  ctx.putImageData(imageData, 0, 0);
+};
+
+const setRedImageData = (data) => {
   for (var i = 0; i < data.length; i += 4) {
-    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+    var avg = (data[i + 1] + data[i + 2]) / 2;
 
     data[i] = 255;
-    data[i + 1] = avg * 1.5;
-    data[i + 2] = avg * 1.5;
+    data[i + 1] = avg;
+    data[i + 2] = avg;
   }
-  ctx.putImageData(imageData, 0, 0);
+};
+
+const setGreenImageData = (data) => {
+  for (var i = 0; i < data.length; i += 4) {
+    var avg = (data[i + 1] + data[i + 2]) / 2;
+
+    data[i] = avg;
+    data[i + 1] = 255;
+    data[i + 2] = avg;
+  }
+};
+
+const setBlueImageData = (data) => {
+  for (var i = 0; i < data.length; i += 4) {
+    var avg = (data[i + 1] + data[i + 2]) / 2;
+
+    data[i] = avg;
+    data[i + 1] = avg;
+    data[i + 2] = 255;
+  }
 };
 
 const drawChannelsProject = (img) => {
