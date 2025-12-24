@@ -1,4 +1,6 @@
 const CANVAS_ID = "channels-canvas";
+const IMAGE_WIDTH = 300;
+const IMAGE_HEIGHT = 400;
 
 const canvas = document.getElementById(CANVAS_ID);
 let ctx;
@@ -10,20 +12,28 @@ if (canvas.getContext) {
 const img = new Image();
 img.src = "assets/flowers.jpg";
 img.onload = () => {
-  ctx.drawImage(img, 0, 0, 300, 400);
+  ctx.drawImage(img, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
   img.style.display = "none";
 
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
+  const redLayerArrayData = getRedLayerData(imageData.data);
+  const redLayerImageData = new ImageData(
+    redLayerArrayData,
+    IMAGE_WIDTH,
+    IMAGE_HEIGHT,
+  );
 
-  setRedImageData(data);
+  // setRedImageData(data);
   // setGreenImageData(data);
   // setBlueImageData(data);
 
-  ctx.putImageData(imageData, 0, 0);
+  ctx.putImageData(redLayerImageData, 0, 0);
 };
 
-const setRedImageData = (data) => {
+const setRedImageData = (data) => {};
+
+const getRedLayerData = (data) => {
+  let output = data;
   for (var i = 0; i < data.length; i += 4) {
     const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
     // const avg = (data[i + 1] + data[i + 2]) / 2;
@@ -32,11 +42,12 @@ const setRedImageData = (data) => {
     // data[i + 1] = 255 - avg;
     // data[i + 2] = 255 - avg;
 
-    data[i + 3] = data[i];
-    data[i] = 255;
-    data[i + 1] = 0;
-    data[i + 2] = 0;
+    output[i + 3] = data[i];
+    output[i] = 255;
+    output[i + 1] = 0;
+    output[i + 2] = 0;
   }
+  return output;
 };
 
 const setGreenImageData = (data) => {
