@@ -20,8 +20,8 @@ class Composition {
   }
 
   #initImage() {
-    this.img = new Image();
-    this.img.src = this.imageSrc;
+    // this.img = new Image();
+    this.img = document.querySelector("#source");
     this.img.style.display = "none";
     this.img.onload = this.#onImageLoadHander();
   }
@@ -35,9 +35,7 @@ class Composition {
       this.canvas.width,
       this.canvas.height,
     );
-    // const redLayerArrayData = getRedLayerData(imageData.data);
-    const redLayerArrayData = imageData.data.map((item) => 128);
-    console.log(redLayerArrayData);
+    const redLayerArrayData = getRedLayerData(imageData.data);
     const redLayerImageData = new ImageData(
       redLayerArrayData,
       IMAGE_WIDTH,
@@ -51,6 +49,10 @@ class Composition {
     this.ctx.putImageData(redLayerImageData, 0, 0);
   }
 }
+
+const bla = () => {
+  console.log("bla");
+};
 
 const getRedLayerData = (data) => {
   let output = data;
