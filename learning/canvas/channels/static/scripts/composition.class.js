@@ -40,13 +40,21 @@ class Composition {
     const greenLayerArrayData = this.#getGreenLayerData(imageData.data);
     const blueLayerArrayData = this.#getBlueLayerData(imageData.data);
 
-    const redLayerImageData = new ImageData(
+    const mergedLayersArrayData = this.#mergeLayers([
       redLayerArrayData,
+      greenLayerArrayData,
+      blueLayerArrayData,
+    ]);
+
+    const mergedLayersImageData = new ImageData(
+      mergedLayersArrayData,
       IMAGE_WIDTH,
       IMAGE_HEIGHT,
     );
 
-    this.ctx.putImageData(redLayerImageData, 0, 0);
+    console.log(mergedLayersImageData);
+
+    this.ctx.putImageData(mergedLayersImageData, 0, 0);
   }
 
   #getRedLayerData(data) {
@@ -63,7 +71,7 @@ class Composition {
 
   #getGreenLayerData(data) {
     const output = new Uint8ClampedArray(data.length);
-    for (var i = 0; i < data.length; i += 4) {
+    for (let i = 0; i < data.length; i += 4) {
       output[i + 3] = data[i + 1];
 
       output[i] = 0;
@@ -75,13 +83,38 @@ class Composition {
 
   #getBlueLayerData(data) {
     let output = new Uint8ClampedArray(data.length);
-    for (var i = 0; i < data.length; i += 4) {
+    for (let i = 0; i < data.length; i += 4) {
       output[i + 3] = data[i + 2];
 
       output[i] = 0;
       output[i + 1] = 0;
       output[i + 2] = 255;
     }
+    return output;
+  }
+
+  #mergeLayers(layersData) {
+    const getMaxColorValue = (index) => {
+      const colorsData = [];
+      layersData.forEach((layerData) => {
+        colorsData.push(layerData[index]);
+      });
+      return Math.max(...colorsData);
+    };
+
+    let output = new Uint8ClampedArray(layersData[0].length);
+    for (let i = 0; i < layersData[0].length; i += 4) {
+      const redIndex = i;
+      const greenIndex = i + 1;
+      const blueIndex = i + 2;
+      // const alphaIndex = i + 3;
+
+      output[redIndex] = getMaxColorValue(redIndex);
+      output[greenIndex] = getMaxColorValue(greenIndex);
+      output[blueIndex] = getMaxColorValue(blueIndex);
+      output[i + 3] = 255;
+    }
+
     return output;
   }
 }
