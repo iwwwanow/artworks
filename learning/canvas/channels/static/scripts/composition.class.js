@@ -35,39 +35,53 @@ class Composition {
       this.canvas.width,
       this.canvas.height,
     );
-    const redLayerArrayData = getRedLayerData(imageData.data);
+
+    const redLayerArrayData = this.#getRedLayerData(imageData.data);
+    const greenLayerArrayData = this.#getGreenLayerData(imageData.data);
+    const blueLayerArrayData = this.#getBlueLayerData(imageData.data);
+
     const redLayerImageData = new ImageData(
       redLayerArrayData,
       IMAGE_WIDTH,
       IMAGE_HEIGHT,
     );
 
-    // setRedImageData(data);
-    // setGreenImageData(data);
-    // setBlueImageData(data);
-
     this.ctx.putImageData(redLayerImageData, 0, 0);
   }
-}
 
-const bla = () => {
-  console.log("bla");
-};
+  #getRedLayerData(data) {
+    const output = new Uint8ClampedArray(data.length);
+    for (let i = 0; i < data.length; i += 4) {
+      output[i + 3] = data[i];
 
-const getRedLayerData = (data) => {
-  let output = data;
-  for (var i = 0; i < data.length; i += 4) {
-    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-    // const avg = (data[i + 1] + data[i + 2]) / 2;
-
-    // data[i] = 255;
-    // data[i + 1] = 255 - avg;
-    // data[i + 2] = 255 - avg;
-
-    output[i + 3] = data[i];
-    output[i] = 255;
-    output[i + 1] = 0;
-    output[i + 2] = 0;
+      output[i] = 255;
+      output[i + 1] = 0;
+      output[i + 2] = 0;
+    }
+    return output;
   }
-  return output;
-};
+
+  #getGreenLayerData(data) {
+    const output = new Uint8ClampedArray(data.length);
+    for (var i = 0; i < data.length; i += 4) {
+      output[i + 3] = data[i + 1];
+
+      output[i] = 0;
+      output[i + 1] = 255;
+      output[i + 2] = 0;
+    }
+    return output;
+  }
+
+  #getBlueLayerData(data) {
+    let output = new Uint8ClampedArray(data.length);
+    for (var i = 0; i < data.length; i += 4) {
+      output[i + 3] = data[i + 2];
+
+      output[i] = 0;
+      output[i + 1] = 0;
+      output[i + 2] = 255;
+    }
+    return output;
+  }
+}
