@@ -92,11 +92,18 @@ class Composition {
   }
 
   #mergeLayers({ redLayerData, greenLayerData, blueLayerData }) {
-    let backgroundLayerData = new Uint8ClampedArray(redLayerData.length);
-    backgroundLayerData.fill(255);
+    // INFO: fill alpha layer
+    let backgroundLayerData = new Uint8ClampedArray(redLayerData.length).map(
+      (_, index) => {
+        if (index % 4 == 3) {
+          return 255;
+        }
+        return 0;
+      },
+    );
 
     const layersData = [
-      // backgroundLayerData,
+      backgroundLayerData,
       redLayerData,
       greenLayerData,
       blueLayerData,
@@ -106,102 +113,68 @@ class Composition {
     output2 = layersData.reduce((backgroundLayerData, forwardLayerData) => {
       let output = new Uint8ClampedArray(redLayerData.length);
 
-      console.log("backgroundLayerData:");
-      console.log(backgroundLayerData);
-
       for (let i = 0; i < redLayerData.length; i += 4) {
         const redIndex = i;
         const greenIndex = i + 1;
         const blueIndex = i + 2;
         const alphaIndex = i + 3;
 
-        const forwardLayerRed = forwardLayerData[redIndex] / 255;
-        const forwardLayerGreen = forwardLayerData[greenIndex] / 255;
-        const forwardLayerBlue = forwardLayerData[blueIndex] / 255;
-        const forwardLayerAlpha = forwardLayerData[alphaIndex] / 255;
-        const forwardLayerAlphaNormal = forwardLayerAlpha / 255;
+        const fgLayerNormalRed = forwardLayerData[redIndex] / 255;
+        const fgLayerNormalGreen = forwardLayerData[greenIndex] / 255;
+        const fgLayerNormalBlue = forwardLayerData[blueIndex] / 255;
+        const fgLayerNormalAlpha = forwardLayerData[alphaIndex] / 255;
 
-        const backgroundLayerRed = backgroundLayerData[redIndex] / 255;
-        const backgroundLayerGreen = backgroundLayerData[greenIndex] / 255;
-        const backgroundLayerBlue = backgroundLayerData[blueIndex] / 255;
-        const backgroundLayerAlpha = backgroundLayerData[alphaIndex] / 255;
-        const backgroundLayerAlphaNormal =
-          backgroundLayerData[alphaIndex] / 255;
+        const bgLayerNormalRed = backgroundLayerData[redIndex] / 255;
+        const bgLayerNormalGreen = backgroundLayerData[greenIndex] / 255;
+        const bgLayerNormalBlue = backgroundLayerData[blueIndex] / 255;
+        const bgLayerNormalAlpha = backgroundLayerData[alphaIndex] / 255;
 
         const resultAlpha =
-          forwardLayerAlpha + backgroundLayerAlpha * (1 - forwardLayerAlpha);
+          fgLayerNormalAlpha + bgLayerNormalAlpha * (1 - fgLayerNormalAlpha);
 
-        const getResultColor = (
-          foregroundColor,
-          foregroundAlpha,
-          backgroundColor,
-          backgroundAlpha,
+        const getResultNormalColor = (
+          fgColor,
+          fgAlpha,
+          bgColor,
+          bgAlpha,
           resultAlpha,
         ) => {
           const result =
-            (foregroundColor * foregroundAlpha +
-              backgroundColor * backgroundAlpha * (1 - foregroundAlpha)) /
+            (fgColor * fgAlpha + bgColor * bgAlpha * (1 - fgAlpha)) /
             resultAlpha;
-          return result * 255;
+          return result;
         };
 
-        const redResult = getResultColor(
-          forwardLayerRed,
-          forwardLayerAlpha,
-          backgroundLayerRed,
-          backgroundLayerAlpha,
+        const redResult = getResultNormalColor(
+          fgLayerNormalRed,
+          fgLayerNormalAlpha,
+          bgLayerNormalRed,
+          bgLayerNormalAlpha,
           resultAlpha,
         );
 
-        const greenResult = getResultColor(
-          forwardLayerGreen,
-          forwardLayerAlpha,
-          backgroundLayerGreen,
-          backgroundLayerAlpha,
+        const greenResult = getResultNormalColor(
+          fgLayerNormalGreen,
+          fgLayerNormalAlpha,
+          bgLayerNormalGreen,
+          bgLayerNormalAlpha,
           resultAlpha,
         );
 
-        const blueResult = getResultColor(
-          forwardLayerBlue,
-          forwardLayerAlpha,
-          backgroundLayerBlue,
-          backgroundLayerAlpha,
+        const blueResult = getResultNormalColor(
+          fgLayerNormalBlue,
+          fgLayerNormalAlpha,
+          bgLayerNormalBlue,
+          bgLayerNormalAlpha,
           resultAlpha,
         );
 
-        // const redResult =
-        //   forwardLayerRed * forwardLayerAlphaNormal +
-        //   backgroundLayerRed *
-        //     backgroundLayerAlphaNormal *
-        //     (1 - backgroundLayerAlphaNormal);
-
-        // const greenResult =
-        //   forwardLayerGreen * forwardLayerAlphaNormal +
-        //   backgroundLayerGreen *
-        //     backgroundLayerAlphaNormal *
-        //     (1 - backgroundLayerAlphaNormal);
-
-        // const blueResult =
-        //   forwardLayerData[blueIndex] * (forwardLayerData[alphaIndex] / 255) +
-        //   backgroundLayerData[blueIndex] *
-        //     (backgroundLayerData[alphaIndex] / 255) *
-        //     (1 - backgroundLayerData[alphaIndex] / 255);
-
-        // const alphaResult =
-        //   forwardLayerData[alphaIndex] +
-        //   backgroundLayerData[alphaIndex] *
-        //     (1 - forwardLayerData[alphaIndex] / 255);
-
-        output[redIndex] = redResult;
-        output[greenIndex] = greenResult;
-        output[blueIndex] = blueResult;
-        // output[alphaIndex] = alphaResult;
-        // output[greenIndex] = 0;
+        output[redIndex] = redResult * 255;
+        output[greenIndex] = greenResult * 255;
+        output[blueIndex] = blueResult * 255;
         output[alphaIndex] = resultAlpha * 255;
       }
 
-      console.log("output:");
-      console.log(output);
       return output;
     });
 
