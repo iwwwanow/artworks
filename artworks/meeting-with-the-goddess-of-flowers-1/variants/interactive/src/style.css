@@ -1,0 +1,34 @@
+.content {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.goddes__container {
+  width: 100%;
+  max-width: 512px;
+  aspect-ratio: 1/1;
+  align-items: center;
+  justify-content: center;
+}
+
+.goddess {
+  position: absolute;
+  max-width: 100%;
+  mix-blend-mode: screen;
+}
+
+svg {
+  vertical-align: top;
+  width: 100%;
+  height: auto;
+}
+
+svg path {
+  color: inherit;
+}
